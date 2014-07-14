@@ -1,0 +1,18 @@
+[
+    {
+      "name": "Amoxicilin",
+      "suspensionMg": 250,
+      "suspensionMl": 5,
+      "doses": 3,
+      "indications": {
+        "faringitis": {
+          "minDose": 40,
+          "maxDose": 60
+        },
+        "pneumonia": {
+          "minDose": 60,
+          "maxDose": 80
+        }
+      }
+    }
+]

@@ -1,0 +1,145 @@
+<!doctype html>
+<html ng-app="dosageApp">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0, minimal-ui">
+        <title>Dosage</title>
+
+        <!-- Add to homescreen for Chrome on Android -->
+        <meta name="mobile-web-app-capable" content="yes">
+
+        <!-- iOS icons -->
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/touch/apple-touch-icon-144x144-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/touch/apple-touch-icon-114x114-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/touch/apple-touch-icon-72x72-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" href="images/touch/apple-touch-icon-57x57-precomposed.png">
+
+        <!-- Tile icon for Win8 (144x144 + tile color) -->
+        <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+        <meta name="msapplication-TileColor" content="#3372DF">
+
+        <!-- Generic Icon -->
+        <link rel="shortcut icon" href="images/touch/touch-icon-57x57.png">
+
+        <!-- Chrome Add to Homescreen -->
+        <link rel="shortcut icon" sizes="196x196" href="images/touch/touch-icon-196x196.png">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="apple-mobile-web-app-title" content="">
+
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <!-- build:css styles/main.min.css -->
+        <link rel="stylesheet" href="styles/flat-ui.css">
+        <link rel="stylesheet" href="styles/main.css">
+        <!-- endbuild -->
+
+    </head>
+    <body ng-controller="DrugListCtrl">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#" tab-index="2">Dosage</a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="navbar-menu">
+                    <div class="navbar-form navbar-right">
+                        <div class="form-group">
+                            <input ng-model="search.drugIndicationListQuery" tab-index="1"
+                                type="search" class="search form-control" placeholder="Search">
+                            <span id="searchclear" class="glyphicon glyphicon-remove-circle"
+                                ng-click="search.drugIndicationListQuery = ''"
+                                ng-show="search.drugIndicationListQuery.length"></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </nav>
+
+        <main>
+            <section id="drugs-list">
+                <article class="card loading" ng-hide="drugs">
+                    loading
+                </article>
+                <article class="card item" data-type="{{ item.type }}"
+                    ng-repeat="item in drugs
+                                | filter:drugOrIndicationFilter()
+                                | orderBy:'name'">
+                    <header>
+                        <h1><a href="#" ng-click="item.active = !item.active"><span class="item-icon"></span>{{ item.name }}</a></h1>
+                    </header>
+                    <div class="item-content" ng-show="item.active">
+                        <div class="drug-indication-options">
+                            <button class="btn"
+                                ng-class="{true: 'btn-primary'}[patient.diagnostic == indication]"
+                                ng-click="patient.diagnostic = indication"
+                                ng-repeat="(indication, data) in item.indications">{{ indication }}</button>
+                        </div>
+                        <div class="weight">
+                            <strong data-toggle="modal" data-target=".inputWeight">{{ patient.weight | number:2 }}kg</strong>
+                            <input id="weight" type="range" min="0.1" max="60.0" step="0.1" ng-model="patient.weight" />
+                            <div class="inputWeight modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-body">
+                                        <label for="inputWeight">patient weight</label>
+                                        <input id="inputWeight" type="number"
+                                            min="0.1" max="200.0" step="0.1"
+                                            pattern="[0-9]+([,.][0-9]+)?" maxlength="6"
+                                            ng-value="patient.weight"
+                                            ng-class="{false: 'invalid'}[validateInputWeight()]" required>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                            ng-disabled="validateInputWeight()"
+                                            ng-click="setInputWeight()">set weight</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="dosage">
+                            <thead>
+                                <tr>
+                                    <th>Dosage<br><span class="unit">(mg/kg/day)</span></th>
+                                    <th>Posology<br><span class="unit">{{ item.doses }} doses</th>
+                                    <th>Quantity<br><span class="unit">{{ item.suspensionMg }}mg per {{ item.suspensionMl }}ml</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="dosage in drugDosages(item)">
+                                    <td>{{ dosage }}mg</td>
+                                    <td>{{ drugPosology(item, dosage).total }}mg ({{ drugPosology(item, dosage).perDose }}mg / {{ drugPosology(item, dosage).hours}}h)</td>
+                                    <td>{{ drugQuantity(item, dosage) | number:2 }}ml</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+            </section>
+        </main>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+        <!-- build:js dosage.min.js -->
+        <script src="dosage.js"></script>
+        <script src="dosage-list/dosage-list.js"></script>
+        <!-- endbuild -->
+
+        <script>/*
+            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='//www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            ga('create','UA-XXXXX-X');ga('send','pageview');*/
+        </script>
+    </body>
+</html>

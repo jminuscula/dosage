@@ -1,0 +1,206 @@
+@import 'values';
+
+body {
+    background: $midnight-blue;
+    user-select: none;
+}
+
+.navbar {
+    border-radius: 0;
+    @include section-space;
+}
+
+.container-fluid > .navbar-header,
+.container-fluid > .navbar-collapse {
+    // fixes flat-ui navbar-header
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+#searchclear {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+
+    &:hover {
+        color: $turquoise;
+    }
+}
+
+@mixin centered-children {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: space-around;
+
+    @media all and (min-width: 768px) {
+        flex-flow: row nowrap;
+    }
+}
+
+.card {
+    background: white;
+    padding: 5px;
+    box-shadow: 5px 5px $wet-asphalt;
+    margin-bottom: 15px;
+
+    h1 {
+        font-size: 1em;
+        margin: 5px 0;
+
+        a {
+            display: block;
+            width: 100%;
+        }
+    }
+}
+
+.item-icon {
+    display: inline-block;
+    vertical-align: middle;
+    background: url('/images/icons/drugindication2x.png') no-repeat;
+    @media only screen and (min-device-pixel-ratio: 2) and (min-resolution: 192dpi) and (min-resolution: 2dppx){
+        background: url('/images/icons/drugindication.png') no-repeat;
+    }
+    background-size: 64px 32px;
+    height: 32px;
+    width: 32px;
+    margin: 0 10px;
+}
+
+.item[data-type="drug"] .item-icon {
+    background-position: top left;
+}
+.item[data-type="indication"] .item-icon {
+    background-position: top right;
+}
+
+.item-content {
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.drug-indication-options {
+    margin: 20px;
+
+    button {
+        margin-left: 5px;
+    }
+
+    button:first-child {
+        margin-left: 0;
+    }
+}
+
+.weight {
+    margin-bottom: 40px;
+    padding: 0 20px;
+
+    button {
+        padding: 5px 10px;
+        margin: 0 5px;
+    }
+
+    strong {
+        font-size: 2em;
+        vertical-align: middle;
+        cursor: pointer;
+    }
+
+    input,
+    .markers {
+        max-width: 450px;
+    }
+
+    input {
+        -webkit-appearance: none;
+        outline: none;
+        height: 10px;
+        background: #ccc;
+        border: #999;
+        border-radius: 5px;
+        margin: 0 auto;
+    }
+
+    input[type='range']::-moz-range-track {
+        outline: none;
+        height: 10px;
+        background: #ccc;
+        border: #999;
+        border-radius: 5px;
+    }
+
+    input[type='range']::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        height: 28px;
+        width: 28px;
+        border: $green-sea;
+        background: $turquoise;
+        border-radius: 14px;
+        cursor: pointer;
+    }
+
+    input[type='range']::-moz-range-thumb {
+        height: 28px;
+        width: 28px;
+        border: $green-sea;
+        background: $turquoise;
+        border-radius: 14px;
+        cursor: pointer;
+    }
+
+    .inputWeight {
+        .modal-body, .modal-footer {
+            background: white;
+        }
+
+        .modal-body {
+            text-align: center;
+        }
+
+        label, input {
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            font-size: 1.2em;
+        }
+
+        input {
+            background: white;
+            font-weight: bold;
+            font-size: 2em;
+            height: 2em;
+            text-align: center;
+
+            .invalid {
+                color: red;
+            }
+        }
+    }
+
+}
+
+.dosage {
+    width: 100%;
+    padding: 0 15px;
+//    font-size: 0.5em;
+
+    th, td {
+        text-align: center;
+        width: 33.333333333%;
+    }
+
+    tr:nth-child(2n) {
+        background: #ededed;
+    }
+}
+
+.unit {
+    font-size: 0.8em;
+    font-weight: lighter;
+}
