@@ -1,5 +1,3 @@
-<<<<<<< Local Changes
-
 dosageApp.controller('DrugListCtrl', ['$scope', '$http',
   function ($scope, $http) {
     $scope.search = {
@@ -78,6 +76,3 @@ dosageApp.controller('DrugListCtrl', ['$scope', '$http',
 
   }
 ]);
-
-=======
->>>>>>> External Changes
