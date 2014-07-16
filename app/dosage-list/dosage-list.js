@@ -11,7 +11,7 @@ dosageApp.controller('DrugListCtrl', ['$scope', '$http',
     };
 
     $scope.drugs = null;
-    $http.get('/data/drugs.json').then(
+    $http.get('../data/drugs.json').then(
       function(response) {
         $scope.drugs = response.data;
       }
