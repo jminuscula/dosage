@@ -61,9 +61,9 @@ body {
 .item-icon {
     display: inline-block;
     vertical-align: middle;
-    background: url('/images/icons/drugindication2x.png') no-repeat;
+    background: url('images/icons/drugindication2x.png') no-repeat;
     @media only screen and (min-device-pixel-ratio: 2) and (min-resolution: 192dpi) and (min-resolution: 2dppx){
-        background: url('/images/icons/drugindication.png') no-repeat;
+        background: url('images/icons/drugindication.png') no-repeat;
     }
     background-size: 64px 32px;
     height: 32px;
